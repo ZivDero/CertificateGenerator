@@ -1,0 +1,142 @@
+﻿<Window x:Class="CertificateGenerator.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CertificateGenerator"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:viewModel="clr-namespace:CertificateGenerator.ViewModel"
+        xmlns:other="clr-namespace:CertificateGenerator.Other"
+        mc:Ignorable="d"
+        Title="Certificate Generator" Height="500" Width="800" ResizeMode="CanResize" MinWidth="800" MinHeight="520" DataContext="{StaticResource MainViewModel}">
+    <Window.Resources>
+        <viewModel:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+        <viewModel:LeftAlignmentConverter x:Key="LeftAlignmentConverter" />
+        <viewModel:CenterAlignmentConverter x:Key="CenterAlignmentConverter" />
+        <viewModel:RightAlignmentConverter x:Key="RightAlignmentConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <Image Source="{Binding ImageSource}" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <other:DraggableTextBlock 
+                        Text="{Binding NameTextPreview}" 
+                        Margin="10,10,0,0" 
+                        LineHeight="{Binding Label1Parameters.Font.Size}"
+                        RealWidth="{Binding Label1Parameters.Width, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" 
+                        RealHeight="{Binding Label1Parameters.Height, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" 
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Top" 
+                        Position="{Binding Label1Parameters.Position, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"
+                        FontFamily="{Binding Label1Parameters.Font.Family}" 
+                        FontSize="{Binding Label1Parameters.Font.Size}" 
+                        FontWeight="{Binding Label1Parameters.Font.Weight}" 
+                        FontStyle="{Binding Label1Parameters.Font.Style}" 
+                        
+                        Foreground="{Binding Path=Label1Parameters.Color, 
+                                        UpdateSourceTrigger=PropertyChanged, 
+                                        Converter={StaticResource ColorToBrushConverter}
+                               }"/>
+                    <other:DraggableTextBlock 
+                        Text="123" 
+                        Margin="10,50,0,0" 
+                        RealWidth="{Binding Label2Parameters.Width, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" 
+                        RealHeight="{Binding Label2Parameters.Height, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" 
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Top" 
+                        Position="{Binding Label2Parameters.Position, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"
+                        FontFamily="{Binding Label2Parameters.Font.Family}" 
+                        FontSize="{Binding Label2Parameters.Font.Size}" 
+                        FontWeight="{Binding Label2Parameters.Font.Weight}" 
+                        FontStyle="{Binding Label2Parameters.Font.Style}" 
+                        Foreground="{Binding Path=Label2Parameters.Color, 
+                                        UpdateSourceTrigger=PropertyChanged, 
+                                        Converter={StaticResource ColorToBrushConverter}
+                               }"
+                        Width="Auto"/>
+                </Grid>
+            </ScrollViewer>
+            <Grid Grid.Column="1">
+                <StackPanel>
+                    <GroupBox Header="Input/Output">
+                        <StackPanel>
+                            <Button Content="Open PDF" Margin="5,5,5,0" Command="{Binding OpenPdfCommand}" Height="21" IsEnabled="{Binding PdfButtonActive}"/>
+                            <Button Content="Open Excel" Margin="5,5,5,0" Command="{Binding OpenExcelCommand}" Height="21" IsEnabled="{Binding ExcelButtonActive}"/>
+                            <Button Content="Generate Certificates" Margin="5,5,5,0" Command="{Binding GenerateCertificatesCommand}" Height="21" IsEnabled="{Binding GenerateButtonActive}"/>
+                            <Button Content="Email Settings" Margin="5,5,5,0" Command="{Binding EmailSettingsCommand}" Height="21" IsEnabled="{Binding EmailSettingsButtonActive}"/>
+                            <Button Content="Send Emails" Margin="5,5,5,0" Command="{Binding SendEmailsCommand}" Height="21" IsEnabled="{Binding SendEmailsButtonActive}"/>
+                            <Grid Height="25.96" Margin="0,0,5,0">
+                                <Label Content="DPI:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <TextBox HorizontalAlignment="Left" Margin="36,0,0,0" Text="{Binding Dpi}" TextWrapping="Wrap" VerticalAlignment="Center" Width="147" MaxLength="4"/>
+                            </Grid>
+                            <Grid Height="25.96" Margin="0,-5,5,0">
+                                <Label Content="First Certificate:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <TextBox HorizontalAlignment="Left" Margin="96,0,0,0" Text="{Binding FirstCertificate}" TextWrapping="Wrap" VerticalAlignment="Center" Width="87" MaxLength="5"/>
+                            </Grid>
+                        </StackPanel>
+
+                    </GroupBox>
+                    <GroupBox Header="Name Text">
+                        <StackPanel>
+                            <Grid Margin="0,5,0,0">
+                                <Button Content="Font" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Width="61" Height="21" Command="{Binding SelectFont1Command}"/>
+                                <xctk:ColorPicker Margin="70,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="113" Height="21" SelectedColor="{Binding Label1Parameters.Color}"/>
+                            </Grid>
+                            <Grid>
+                                <Label Content="Alignment:" HorizontalAlignment="Left"/>
+                                <ToggleButton Width="21" Height="21" HorizontalAlignment="Left" Margin="72,0,0,0" Content="L" IsChecked="{Binding Path=NameAlignment, 
+                                        UpdateSourceTrigger=PropertyChanged, 
+                                        Converter={StaticResource LeftAlignmentConverter}
+                               }"/>
+                                <ToggleButton Width="21" Height="21" HorizontalAlignment="Left" Margin="98,0,0,0" Content="C" IsChecked="{Binding Path=NameAlignment, 
+                                        UpdateSourceTrigger=PropertyChanged, 
+                                        Converter={StaticResource CenterAlignmentConverter}
+                               }"/>
+                                <ToggleButton Width="21" Height="21" HorizontalAlignment="Left" Margin="124,0,0,0" Content="R" IsChecked="{Binding Path=NameAlignment, 
+                                        UpdateSourceTrigger=PropertyChanged, 
+                                        Converter={StaticResource RightAlignmentConverter}
+                               }"/>
+                            </Grid>
+                            <TextBox Height="21" Margin="5,5,5,5" Text="{Binding NameTextPreview}"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Certificate Number Text">
+                        <StackPanel>
+                            <Grid Margin="0,5,0,0">
+                                <Button Content="Font" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Width="61" Height="21" Command="{Binding SelectFont2Command}"/>
+                                <xctk:ColorPicker Margin="70,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="113" Height="21" SelectedColor="{Binding Label2Parameters.Color}"/>
+                            </Grid>
+                            <Grid>
+                                <Label Content="Alignment:" HorizontalAlignment="Left"/>
+                                <ToggleButton Width="21" Height="21" HorizontalAlignment="Left" Margin="72,0,0,0" Content="L" IsChecked="{Binding Path=NumberAlignment, 
+                                        UpdateSourceTrigger=PropertyChanged, 
+                                        Converter={StaticResource LeftAlignmentConverter}
+                               }"/>
+                                <ToggleButton Width="21" Height="21" HorizontalAlignment="Left" Margin="98,0,0,0" Content="C" IsChecked="{Binding Path=NumberAlignment, 
+                                        UpdateSourceTrigger=PropertyChanged, 
+                                        Converter={StaticResource CenterAlignmentConverter}
+                               }"/>
+                                <ToggleButton Width="21" Height="21" HorizontalAlignment="Left" Margin="124,0,0,0" Content="R" IsChecked="{Binding Path=NumberAlignment, 
+                                        UpdateSourceTrigger=PropertyChanged, 
+                                        Converter={StaticResource RightAlignmentConverter}
+                               }"/>
+                            </Grid>
+                            <CheckBox Margin="5,5,0,5" Content="Add number" IsChecked="{Binding AddNumber}"/>
+                            <CheckBox Margin="5,0,5,5" Content="Add leading zeroes" IsChecked="{Binding AddZeroes}"/>
+                            <Grid Height="25.96" Margin="0,-5,5,0">
+                                <Label Content="Digits:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <TextBox HorizontalAlignment="Left" Margin="48,0,0,0" Text="{Binding DigitCount}" TextWrapping="Wrap" VerticalAlignment="Center" Width="135" MaxLength="5"/>
+                            </Grid>
+                        </StackPanel>
+                    </GroupBox>
+                    <ProgressBar Height="25" Margin="5,5,5,5" Value="{Binding ProgressBarValue}"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

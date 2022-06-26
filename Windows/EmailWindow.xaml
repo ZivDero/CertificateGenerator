@@ -1,0 +1,30 @@
+﻿<Window x:Class="CertificateGenerator.Windows.EmailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Email Settings" Height="450" Width="800" DataContext="{StaticResource MainViewModel}" ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Header="Settings" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Width="200" Grid.Column="0">
+                <StackPanel>
+                    <Grid Height="25.96" Margin="0,0,5,0">
+                        <Label Content="Name:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBox HorizontalAlignment="Left" Margin="96,0,0,0" Text="{Binding SenderName}" VerticalAlignment="Center" Width="87"/>
+                    </Grid>
+                    <Grid Height="25.96" Margin="0,-5,5,0">
+                        <Label Content="Subject:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBox HorizontalAlignment="Left" Margin="96,0,0,0" Text="{Binding EmailSubject}" VerticalAlignment="Center" Width="87"/>
+                    </Grid>
+                    <CheckBox Margin="5,0,5,5" Content="HTML Body" IsChecked="{Binding HtmlBody}"/>
+                    <Button Content="Add Attachment" HorizontalAlignment="Center" Width="178" Command="{Binding AddAttachmentCommand}" Margin="0,0,0,5"/>
+                    <Button Content="Save" HorizontalAlignment="Center" Width="178" Command="{Binding SaveEmailCommand}"/>
+                </StackPanel>
+            </GroupBox>
+        <TextBox AcceptsReturn="True" AcceptsTab="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Column="1" Text="{Binding EmailBody}" Margin="5,5,5,5"/>
+    </Grid>
+</Window>
